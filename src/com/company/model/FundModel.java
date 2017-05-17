@@ -12,7 +12,7 @@ import java.util.List;
 public class FundModel {
 
     public static List<Fund> getFunds(String fundCode) {
-        String s = FileUtil.readFile(fundCode);
+        String s = FileUtil.readFile("F_" + fundCode);
 
         List<Fund> funds = new ArrayList<>();
         String[] strings = s.split("\n");

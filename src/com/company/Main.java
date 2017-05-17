@@ -6,6 +6,7 @@ import com.company.ui.UiData;
 import com.company.util.FileUtil;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -37,20 +38,14 @@ public class Main {
         sInvestMap.clear();
         sInvestments.clear();
 
-        FUND_CODE = "210004";
-        runWithDiffentR();
-
-        FUND_CODE = "160212";
-        runWithDiffentR();
-
-        FUND_CODE = "519975";
-        runWithDiffentR();
-
-        FUND_CODE = "310318";
-        runWithDiffentR();
-
-        FUND_CODE = "000478";
-        runWithDiffentR();
+        File[] files = new File(".").listFiles();
+        for (File file : files) {
+            String fileName = file.getName();
+            if (fileName.startsWith("F_")) {
+                FUND_CODE = fileName.replaceFirst("F_", "");
+                runWithDiffentR();
+            }
+        }
 
         UiData data = UiData.buildFromInvestments(sInvestments, condition);
         Ui ui = new Ui(data);
