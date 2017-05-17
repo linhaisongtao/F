@@ -1,15 +1,16 @@
 package com.company;
 
 import com.company.model.*;
+import com.company.ui.Ui;
+import com.company.ui.UiData;
 import com.company.util.FileUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
+    private static final Map<Invest.Condition, List<Invest>> sInvestMap = new HashMap<>();
+    private static final List<Investment> sInvestments = new ArrayList<>();
     private static Set<String> sMonth = new HashSet<>();
     private static int base = 3300;
     private static float r = 0.1f;
@@ -20,6 +21,9 @@ public class Main {
 
     public static void main(String[] args) {
         // write your code here
+        sInvestMap.clear();
+        sInvestments.clear();
+
         FUND_CODE = "210004";
         runWithDiffentR();
 
@@ -35,6 +39,9 @@ public class Main {
         FUND_CODE = "000478";
         runWithDiffentR();
 
+        UiData data = UiData.buildFromInvestments(sInvestments, new Invest.Condition("210004", 3300, -1f, -1f, -1f, 36));
+        Ui ui = new Ui(data);
+        ui.showChart();
     }
 
     private static void runWithDiffentR() {
@@ -78,7 +85,7 @@ public class Main {
             }
         }
 
-        System.out.println("Main.main " + invests.size());
+//        System.out.println("Main.main " + invests.size());
 
         int needCount = S_TOTAL;
         List<Invest> investList = new ArrayList<>();
@@ -90,7 +97,7 @@ public class Main {
 
 
         computeBenifit(investList);
-        System.out.println("Main.main " + investList.size());
+//        System.out.println("Main.main " + investList.size());
     }
 
     private static void computeBenifit(List<Invest> invests) {
@@ -106,24 +113,14 @@ public class Main {
                 invest.setTotalMoney(invest.getCurrentMoney());
             }
             invest.setMarketMoney(invest.getTotalCount() * invest.getFund().getPrice());
-
-//            String format = String.format("%d date[%s],currentMoney[%.0f],totalMoney[%.0f],currentCount[%.2f],totalCount[%.2f],marketMoney[%.2f],benifitRatio[%.2f%%]",
-//                    i + 1,
-//                    invest.getFund().getDateString(),
-//                    invest.getCurrentMoney(),
-//                    invest.getTotalMoney(),
-//                    invest.getCurrentCount(),
-//                    invest.getTotalCount(),
-//                    invest.getMarketMoney(),
-//                    (invest.getMarketMoney() / invest.getTotalMoney() - 1) * 100);
-//
-//            System.out.println(format);
+            invest.setCost(invest.getTotalMoney() / invest.getTotalCount());
+            invest.setProfitRatio(invest.getMarketMoney() / invest.getTotalMoney() - 1);
         }
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("base[" + base + "],ratio[" + r + "],max[" + max + "],min[" + min + "]").append("\n");
-        String title = "编号\t日期\t指数\t净值\t钱(当期)\t份额(当期)\t钱(总)\t份额(总)\t市值\t收益率";
-        System.out.println(title);
+        String title = "编号\t日期\t指数\t净值\t钱(当期)\t份额(当期)\t钱(总)\t份额(总)\t成本(总)\t市值\t收益率";
+//        System.out.println(title);
         stringBuilder.append(title).append("\n");
         for (int i = 0; i < invests.size(); i++) {
             Invest invest = invests.get(i);
@@ -136,14 +133,18 @@ public class Main {
                     invest.getCurrentCount(),
                     invest.getTotalMoney(),
                     invest.getTotalCount(),
+                    invest.getCost(),
                     invest.getMarketMoney(),
                     (invest.getMarketMoney() / invest.getTotalMoney() - 1) * 100);
 
-            System.out.println(s);
+//            System.out.println(s);
             stringBuilder.append(s).append("\n");
         }
 
         FileUtil.writeFile("fund/" + invests.get(0).getFund().getCode() + "_" + invests.size() + "_" + base + "_" + r + "_" + max + "_" + min + ".txt", stringBuilder.toString());
+        Invest.Condition condition = new Invest.Condition(invests.get(0).getFund().getCode(), base, r, max, min, invests.size());
+        sInvestMap.put(condition, invests);
+        sInvestments.add(new Investment(invests, condition));
     }
 
     private static boolean canBuy(Zhishu zhishu, Fund fund) {

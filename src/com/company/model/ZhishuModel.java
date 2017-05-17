@@ -40,9 +40,9 @@ public class ZhishuModel {
         return zhishu;
     }
 
-    public static Zhishu findZhishu(List<Zhishu> zhishus, Date date){
+    public static Zhishu findZhishu(List<Zhishu> zhishus, Date date) {
         for (int i = 0; i < zhishus.size(); i++) {
-            if(!zhishus.get(i).getDate().before(date)){
+            if (!zhishus.get(i).getDate().before(date)) {
                 return zhishus.get(i);
             }
         }

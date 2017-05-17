@@ -15,6 +15,11 @@ public class Invest {
     private double totalMoney;
 
     private double marketMoney;
+    private double mCost;
+
+    private double mProfitRatio;
+
+    private Condition mCondition;
 
     public double getTotalCount() {
         return totalCount;
@@ -80,12 +85,91 @@ public class Invest {
         this.marketMoney = marketMoney;
     }
 
+    public double getCost() {
+        return mCost;
+    }
+
+    public void setCost(double cost) {
+        mCost = cost;
+    }
+
+    public double getProfitRatio() {
+        return mProfitRatio;
+    }
+
     @Override
     public String toString() {
         return "Invest{" +
                 "fund=" + fund +
                 ", zhishu=" + zhishu +
                 ", ratio=" + ratio +
+                ", totalCount=" + totalCount +
+                ", currentCount=" + currentCount +
+                ", currentMoney=" + currentMoney +
+                ", totalMoney=" + totalMoney +
+                ", marketMoney=" + marketMoney +
+                ", mCost=" + mCost +
+                ", mProfitRatio=" + mProfitRatio +
+                ", mCondition=" + mCondition +
                 '}';
+    }
+
+    public void setProfitRatio(double profitRatio) {
+        mProfitRatio = profitRatio;
+    }
+
+    public Condition getCondition() {
+        return mCondition;
+    }
+
+    public void setCondition(Condition condition) {
+        mCondition = condition;
+    }
+
+    public static class Condition {
+        private String mCode;
+        private int base = 3300;
+        private float r = 0.1f;
+        private float max = 2f;
+        private float min = 0.5f;
+        private int total = 12;
+
+        public Condition(String code, int base, float r, float max, float min, int total) {
+            mCode = code;
+            this.base = base;
+            this.r = r;
+            this.max = max;
+            this.min = min;
+            this.total = total;
+        }
+
+        public String getCode() {
+            return mCode;
+        }
+
+        public int getBase() {
+            return base;
+        }
+
+        public float getR() {
+            return r;
+        }
+
+        public float getMax() {
+            return max;
+        }
+
+        public float getMin() {
+            return min;
+        }
+
+        public int getTotal() {
+            return total;
+        }
+
+        @Override
+        public String toString() {
+            return mCode + "_" + base + "_" + r + "_" + max + "_" + min + "_" + total;
+        }
     }
 }

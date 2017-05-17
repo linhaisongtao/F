@@ -40,6 +40,9 @@ public class FileUtil {
         OutputStream outputStream = null;
         try {
             if (!file.exists()) {
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
                 file.createNewFile();
             }
             outputStream = new FileOutputStream(file);

@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by daisongsong on 2017/5/16.
  */
-public class Fund implements Comparable<Fund>{
+public class Fund implements Comparable<Fund> {
     private String name;
     private String code;
     private String dateString;
