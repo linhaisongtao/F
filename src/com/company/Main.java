@@ -25,15 +25,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // write your code here
-        System.out.println("please code base total\n");
+        System.out.println("please base max min \n");
         String cmd = new BufferedReader(new InputStreamReader(System.in)).readLine();
         System.out.println(cmd);
         String[] split = cmd.split(" ");
-        String code = split[0];
-        base = Integer.valueOf(split[1]);
-        int total = Integer.valueOf(split[2]);
-        Invest.Condition condition = new Invest.Condition(code, base, -1f, max, min, total);
-        System.out.println("condition=" + condition);
+        base = Integer.valueOf(split[0]);
+        max = Float.valueOf(split[1]);
+        min = Float.valueOf(split[2]);
 
         sInvestMap.clear();
         sInvestments.clear();
@@ -47,9 +45,21 @@ public class Main {
             }
         }
 
-        UiData data = UiData.buildFromInvestments(sInvestments, condition);
-        Ui ui = new Ui(data);
-        ui.showChart();
+        while (true){
+            System.out.println("please code total\n");
+            cmd = new BufferedReader(new InputStreamReader(System.in)).readLine();
+            System.out.println(cmd);
+            split = cmd.split(" ");
+            String code = split[0];
+            int total = Integer.valueOf(split[1]);
+            Invest.Condition condition = new Invest.Condition(code, base, -1f, max, min, total);
+            System.out.println("condition=" + condition);
+
+            UiData data = UiData.buildFromInvestments(sInvestments, condition);
+            Ui ui = new Ui(data);
+            ui.showChart();
+        }
+
     }
 
     private static void runWithDiffentR() {
@@ -132,7 +142,7 @@ public class Main {
         stringBuilder.append(title).append("\n");
         for (int i = 0; i < invests.size(); i++) {
             Invest invest = invests.get(i);
-            String s = String.format("%d\t%s\t%.2f\t%.4f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f%%\t",
+            String s = String.format("%d\t%s\t%.2f\t%.4f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f%%\t",
                     i + 1,
                     invest.getFund().getDateString(),
                     invest.getZhishu().getValue(),
@@ -141,13 +151,14 @@ public class Main {
                     invest.getCurrentCount(),
                     invest.getTotalMoney(),
                     invest.getTotalCount(),
-                    invest.getCost(),
                     invest.getMarketMoney(),
-                    (invest.getMarketMoney() / invest.getTotalMoney() - 1) * 100);
+                    invest.getCost(),
+                    invest.getProfitRatio() * 100);
 
 //            System.out.println(s);
             stringBuilder.append(s).append("\n");
         }
+//        System.out.println();
 
         FileUtil.writeFile("fund/" + invests.get(0).getFund().getCode() + "_" + invests.size() + "_" + base + "_" + r + "_" + max + "_" + min + ".txt", stringBuilder.toString());
         Invest.Condition condition = new Invest.Condition(invests.get(0).getFund().getCode(), base, r, max, min, invests.size());
