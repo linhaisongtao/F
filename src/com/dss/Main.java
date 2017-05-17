@@ -137,10 +137,11 @@ public class Main {
             invest.setProfitRatio(invest.getMarketMoney() / invest.getTotalMoney() - 1);
         }
 
+        Log.i(FUND_CODE + "_" + base + "_" + r + "_" + max + "_" + min + "_" + S_TOTAL);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("base[" + base + "],ratio[" + r + "],max[" + max + "],min[" + min + "]").append("\n");
-        String title = "编号\t日期\t指数\t净值\t钱(当期)\t份额(当期)\t钱(总)\t份额(总)\t成本(总)\t市值\t收益率";
-//        System.out.println(title);
+        String title = "编号\t日期\t指数\t净值\t钱(当期)\t份额(当期)\t钱(总)\t份额(总)\t市值\t成本(总)\t收益率";
+        Log.i(title);
         stringBuilder.append(title).append("\n");
         for (int i = 0; i < invests.size(); i++) {
             Invest invest = invests.get(i);
@@ -157,10 +158,10 @@ public class Main {
                     invest.getCost(),
                     invest.getProfitRatio() * 100);
 
-//            System.out.println(s);
+            Log.i(s);
             stringBuilder.append(s).append("\n");
         }
-//        System.out.println();
+        Log.i("");
 
         FileUtil.writeFile("fund/" + invests.get(0).getFund().getCode() + "_" + invests.size() + "_" + base + "_" + r + "_" + max + "_" + min + ".txt", stringBuilder.toString());
         Invest.Condition condition = new Invest.Condition(invests.get(0).getFund().getCode(), base, r, max, min, invests.size());

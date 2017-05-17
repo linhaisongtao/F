@@ -23,22 +23,31 @@ public class Cmder {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("Cmder please input ratio\n");
-        String[] rs = bufferedReader.readLine().split(" ");
+        String[] rs = filterInfo(bufferedReader.readLine()).split(" ");
         RS = new float[rs.length];
         for (int i = 0; i < rs.length; i++) {
-            RS[i] = Float.valueOf(rs[i]);
+            String r = rs[i];
+            if (r != null && r.length() > 0) {
+                RS[i] = Float.valueOf(r);
+            }
         }
 
         while (true) {
             System.out.println("Cmder please input [code base max min total]\n");
-            new Cmder().execute(bufferedReader.readLine());
+            new Cmder().execute(filterInfo(bufferedReader.readLine()));
         }
+    }
+
+    private static String filterInfo(String cmd) {
+        Log.ENABLE_LOG = cmd.contains("-i");
+        return cmd.replaceAll("-i", "");
     }
 
     /**
      * @param cmd code base max min total
      */
     public void execute(String cmd) {
+
         String[] cmds = cmd.split(" ");
         String code = cmds[0];
         int base = Integer.valueOf(cmds[1]);
@@ -67,5 +76,4 @@ public class Cmder {
         Investment investment = Main.run();
         return investment;
     }
-
 }
