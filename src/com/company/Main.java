@@ -5,6 +5,9 @@ import com.company.ui.Ui;
 import com.company.ui.UiData;
 import com.company.util.FileUtil;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -19,8 +22,18 @@ public class Main {
     private static int S_TOTAL = 12;
     private static String FUND_CODE = "210004";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // write your code here
+        System.out.println("please code base total\n");
+        String cmd = new BufferedReader(new InputStreamReader(System.in)).readLine();
+        System.out.println(cmd);
+        String[] split = cmd.split(" ");
+        String code = split[0];
+        base = Integer.valueOf(split[1]);
+        int total = Integer.valueOf(split[2]);
+        Invest.Condition condition = new Invest.Condition(code, base, -1f, max, min, total);
+        System.out.println("condition=" + condition);
+
         sInvestMap.clear();
         sInvestments.clear();
 
@@ -39,7 +52,7 @@ public class Main {
         FUND_CODE = "000478";
         runWithDiffentR();
 
-        UiData data = UiData.buildFromInvestments(sInvestments, new Invest.Condition("210004", 3300, -1f, -1f, -1f, 36));
+        UiData data = UiData.buildFromInvestments(sInvestments, condition);
         Ui ui = new Ui(data);
         ui.showChart();
     }
