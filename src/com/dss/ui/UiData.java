@@ -1,5 +1,6 @@
 package com.dss.ui;
 
+import com.dss.Config;
 import com.dss.model.Invest;
 import com.dss.model.Investment;
 import org.jfree.data.time.Day;
@@ -61,6 +62,7 @@ public class UiData {
 
         UiData data = new UiData();
         TimeSeries priceSeries = new TimeSeries("price", Day.class);
+        TimeSeries zhishuSeries = new TimeSeries("指数", Day.class);
         for (int i = 0; i < list.size(); i++) {
             Investment investment = list.get(i);
 
@@ -72,13 +74,22 @@ public class UiData {
                 seriesProfit.add(new Day(invest.getFund().getDate()), invest.getProfitRatio());
                 if (i == 0) {
                     priceSeries.add(new Day(invest.getFund().getDate()), invest.getFund().getPrice());
+                    zhishuSeries.add(new Day(invest.getFund().getDate()), invest.getZhishu().getValue() / 1000);
                 }
             }
 
-            data.addTimeSeries(series);
+            if (Config.sShowPrice) {
+                data.addTimeSeries(series);
+            }
             data.addTimeSeries(seriesProfit);
+
         }
-        data.addTimeSeries(priceSeries);
+        if (Config.sShowPrice) {
+            data.addTimeSeries(priceSeries);
+        }
+        if (Config.sShowZhishu) {
+            data.addTimeSeries(zhishuSeries);
+        }
 
         data.setChartTitle(chartTitle);
         return data;

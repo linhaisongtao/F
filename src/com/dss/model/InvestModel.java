@@ -11,6 +11,12 @@ public class InvestModel {
         int level = (int) ((nowValue - base) / 100);
 
         float r = 1 - level * ratio;
+//        float r = 1f;
+//        if (level >= 0) {
+//            r = (float) Math.pow(1 - ratio, level);
+//        } else {
+//            r = (float) Math.pow(1 + ratio, -level);
+//        }
 
         return Math.max(min, Math.min(max, r));
     }

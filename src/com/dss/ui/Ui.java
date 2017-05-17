@@ -38,7 +38,7 @@ public class Ui {
         JFrame frame = new JFrame("Java数据统计图");
         frame.setLayout(new GridLayout(1, 1, 10, 10));
         frame.add(getChartPanel());    //添加折线图
-        frame.setBounds(50, 50, 800, 600);
+        frame.setBounds(50, 50, 1200, 900);
         frame.setVisible(true);
     }
 

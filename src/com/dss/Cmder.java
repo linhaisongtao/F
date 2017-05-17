@@ -1,7 +1,9 @@
 package com.dss;
 
 import com.dss.model.Invest;
+import com.dss.model.InvestModel;
 import com.dss.model.Investment;
+import com.dss.model.Zhishu;
 import com.dss.ui.Ui;
 import com.dss.ui.UiData;
 
@@ -42,7 +44,9 @@ public class Cmder {
     private static String filterInfo(String cmd) {
         Log.ENABLE_LOG = cmd.contains("-i");
         sShowGraph = !cmd.contains("-no-graph");
-        return cmd.replaceAll("-i", "").replace("-no-graph", "");
+        Config.sShowPrice = cmd.contains("-price");
+        Config.sShowZhishu = cmd.contains("-zhishu");
+        return cmd.replaceAll("-i", "").replace("-no-graph", "").replace("-price", "").replace("-zhishu", "");
     }
 
     /**
@@ -62,9 +66,27 @@ public class Cmder {
             investments.add(compute(code, base, r, max, min, total));
         }
 
+        System.out.println("");
+        for (float r : RS) {
+            System.out.println("ratio=" + r);
+            System.out.println("指数\t金额");
+            for (int zhishu = 6000; zhishu >= 2000; zhishu -= 100) {
+                Zhishu z = new Zhishu();
+                z.setValue(zhishu);
+                System.out.println(zhishu + "\t" + 1000 * InvestModel.invest(z, base, r, max, min));
+            }
+            System.out.println();
+        }
+
         if (sShowGraph) {
             Invest.Condition condition = new Invest.Condition();
-            UiData data = UiData.buildFromInvestments(investments, condition, code + "_" + base + "_" + max + "_" + min + "_" + total);
+            String fundName = null;
+            try {
+                fundName = investments.get(0).getInvests().get(0).getFund().getName();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            UiData data = UiData.buildFromInvestments(investments, condition, fundName + "[" + code + "]_" + base + "_" + max + "_" + min + "_" + total);
             Ui ui = new Ui(data);
             ui.showChart();
         }
