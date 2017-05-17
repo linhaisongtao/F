@@ -16,6 +16,7 @@ import java.util.List;
  * Created by daisongsong on 2017/5/17.
  */
 public class Cmder {
+    private static boolean sShowGraph = true;
     private static float[] RS;
 
     public static void main(String[] args) throws IOException {
@@ -40,7 +41,8 @@ public class Cmder {
 
     private static String filterInfo(String cmd) {
         Log.ENABLE_LOG = cmd.contains("-i");
-        return cmd.replaceAll("-i", "");
+        sShowGraph = !cmd.contains("-no-graph");
+        return cmd.replaceAll("-i", "").replace("-no-graph", "");
     }
 
     /**
@@ -60,10 +62,12 @@ public class Cmder {
             investments.add(compute(code, base, r, max, min, total));
         }
 
-        Invest.Condition condition = new Invest.Condition();
-        UiData data = UiData.buildFromInvestments(investments, condition, code + "_" + base + "_" + max + "_" + min + "_" + total);
-        Ui ui = new Ui(data);
-        ui.showChart();
+        if (sShowGraph) {
+            Invest.Condition condition = new Invest.Condition();
+            UiData data = UiData.buildFromInvestments(investments, condition, code + "_" + base + "_" + max + "_" + min + "_" + total);
+            Ui ui = new Ui(data);
+            ui.showChart();
+        }
     }
 
     private Investment compute(String code, int base, float r, float max, float min, int total) {
