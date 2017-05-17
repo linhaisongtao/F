@@ -1,4 +1,4 @@
-package com.company.ui;
+package com.dss.ui;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;

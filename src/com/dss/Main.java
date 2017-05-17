@@ -1,9 +1,9 @@
-package com.company;
+package com.dss;
 
-import com.company.model.*;
-import com.company.ui.Ui;
-import com.company.ui.UiData;
-import com.company.util.FileUtil;
+import com.dss.model.*;
+import com.dss.ui.Ui;
+import com.dss.ui.UiData;
+import com.dss.util.FileUtil;
 
 import java.io.BufferedReader;
 import java.io.File;

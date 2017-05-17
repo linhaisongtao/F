@@ -1,6 +1,6 @@
-package com.company.model;
+package com.dss.model;
 
-import com.company.util.FileUtil;
+import com.dss.util.FileUtil;
 
 import java.util.*;
 

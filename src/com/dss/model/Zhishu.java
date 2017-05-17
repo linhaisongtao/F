@@ -1,4 +1,4 @@
-package com.company.model;
+package com.dss.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

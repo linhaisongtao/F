@@ -1,4 +1,4 @@
-package com.company.model;
+package com.dss.model;
 
 import java.util.List;
 

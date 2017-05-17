@@ -1,7 +1,7 @@
-package com.company.ui;
+package com.dss.ui;
 
-import com.company.model.Invest;
-import com.company.model.Investment;
+import com.dss.model.Invest;
+import com.dss.model.Investment;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 

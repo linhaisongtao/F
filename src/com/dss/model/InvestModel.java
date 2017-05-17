@@ -1,4 +1,4 @@
-package com.company.model;
+package com.dss.model;
 
 /**
  * Created by daisongsong on 2017/5/16.

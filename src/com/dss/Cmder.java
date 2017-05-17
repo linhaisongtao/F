@@ -1,11 +1,12 @@
-package com.company;
+package com.dss;
 
-import com.company.model.Invest;
-import com.company.model.Investment;
-import com.company.ui.Ui;
-import com.company.ui.UiData;
+import com.dss.model.Invest;
+import com.dss.model.Investment;
+import com.dss.ui.Ui;
+import com.dss.ui.UiData;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class Cmder {
     private static float[] RS;
 
     public static void main(String[] args) throws IOException {
+        System.out.println(new File("").getAbsolutePath());
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("Cmder please input ratio\n");
