@@ -97,6 +97,10 @@ public class Invest {
         return mProfitRatio;
     }
 
+    public void setProfitRatio(double profitRatio) {
+        mProfitRatio = profitRatio;
+    }
+
     @Override
     public String toString() {
         return "Invest{" +
@@ -112,10 +116,6 @@ public class Invest {
                 ", mProfitRatio=" + mProfitRatio +
                 ", mCondition=" + mCondition +
                 '}';
-    }
-
-    public void setProfitRatio(double profitRatio) {
-        mProfitRatio = profitRatio;
     }
 
     public Condition getCondition() {
@@ -141,6 +141,10 @@ public class Invest {
             this.max = max;
             this.min = min;
             this.total = total;
+        }
+
+        public Condition() {
+            this("", -1, -1f, -1f, -1f, -1);
         }
 
         public String getCode() {

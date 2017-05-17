@@ -15,13 +15,13 @@ import java.util.*;
 public class Main {
     private static final Map<Invest.Condition, List<Invest>> sInvestMap = new HashMap<>();
     private static final List<Investment> sInvestments = new ArrayList<>();
+    public static int base = 3300;
+    public static float r = 0.1f;
+    public static float max = 2f;
+    public static float min = 0.5f;
+    public static int S_TOTAL = 12;
+    public static String FUND_CODE = "210004";
     private static Set<String> sMonth = new HashSet<>();
-    private static int base = 3300;
-    private static float r = 0.1f;
-    private static float max = 2f;
-    private static float min = 0.5f;
-    private static int S_TOTAL = 12;
-    private static String FUND_CODE = "210004";
 
     public static void main(String[] args) throws IOException {
         // write your code here
@@ -45,7 +45,7 @@ public class Main {
             }
         }
 
-        while (true){
+        while (true) {
             System.out.println("please code total\n");
             cmd = new BufferedReader(new InputStreamReader(System.in)).readLine();
             System.out.println(cmd);
@@ -55,7 +55,7 @@ public class Main {
             Invest.Condition condition = new Invest.Condition(code, base, -1f, max, min, total);
             System.out.println("condition=" + condition);
 
-            UiData data = UiData.buildFromInvestments(sInvestments, condition);
+            UiData data = UiData.buildFromInvestments(sInvestments, condition, code);
             Ui ui = new Ui(data);
             ui.showChart();
         }
@@ -82,7 +82,7 @@ public class Main {
         run();
     }
 
-    private static void run() {
+    public static Investment run() {
         sMonth.clear();
 
         List<Zhishu> zhishus = ZhishuModel.getZhishus();
@@ -114,11 +114,13 @@ public class Main {
         }
 
 
-        computeBenifit(investList);
+        Investment investment = computeBenifit(investList);
 //        System.out.println("Main.main " + investList.size());
+
+        return investment;
     }
 
-    private static void computeBenifit(List<Invest> invests) {
+    private static Investment computeBenifit(List<Invest> invests) {
         for (int i = 0; i < invests.size(); i++) {
             Invest invest = invests.get(i);
             invest.setCurrentMoney(1000 * invest.getRatio());
@@ -163,7 +165,9 @@ public class Main {
         FileUtil.writeFile("fund/" + invests.get(0).getFund().getCode() + "_" + invests.size() + "_" + base + "_" + r + "_" + max + "_" + min + ".txt", stringBuilder.toString());
         Invest.Condition condition = new Invest.Condition(invests.get(0).getFund().getCode(), base, r, max, min, invests.size());
         sInvestMap.put(condition, invests);
-        sInvestments.add(new Investment(invests, condition));
+        Investment investment = new Investment(invests, condition);
+        sInvestments.add(investment);
+        return investment;
     }
 
     private static boolean canBuy(Zhishu zhishu, Fund fund) {

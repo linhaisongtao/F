@@ -44,7 +44,7 @@ public class Ui {
 
     public void initChart() {
         XYDataset xydataset = createDataset();
-        JFreeChart jfreechart = ChartFactory.createTimeSeriesChart("Legal & General", "d", "p", xydataset, true, true, true);
+        JFreeChart jfreechart = ChartFactory.createTimeSeriesChart(mUiData.getChartTitle(), "d", "p", xydataset, true, true, true);
         XYPlot xyplot = (XYPlot) jfreechart.getPlot();
         DateAxis dateaxis = (DateAxis) xyplot.getDomainAxis();
         dateaxis.setDateFormatOverride(new SimpleDateFormat("yyyy-MM"));

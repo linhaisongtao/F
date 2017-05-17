@@ -14,7 +14,9 @@ import java.util.List;
 public class UiData {
     private List<TimeSeries> mTimeSeries = new ArrayList<>();
 
-    public static UiData buildFromInvestments(List<Investment> investments, Invest.Condition condition) {
+    private String mChartTitle;
+
+    public static UiData buildFromInvestments(List<Investment> investments, Invest.Condition condition, String chartTitle) {
         List<Investment> list = new ArrayList<>();
 
         for (Investment investment : investments) {
@@ -58,19 +60,27 @@ public class UiData {
         }
 
         UiData data = new UiData();
-        for (Investment investment : list) {
+        TimeSeries priceSeries = new TimeSeries("price", Day.class);
+        for (int i = 0; i < list.size(); i++) {
+            Investment investment = list.get(i);
+
             TimeSeries series = new TimeSeries(investment.getCondition().toString(), Day.class);
             TimeSeries seriesProfit = new TimeSeries(investment.getCondition().toString() + "_profit", Day.class);
             List<Invest> invests = investment.getInvests();
             for (Invest invest : invests) {
                 series.add(new Day(invest.getFund().getDate()), invest.getCost());
                 seriesProfit.add(new Day(invest.getFund().getDate()), invest.getProfitRatio());
+                if (i == 0) {
+                    priceSeries.add(new Day(invest.getFund().getDate()), invest.getFund().getPrice());
+                }
             }
 
             data.addTimeSeries(series);
             data.addTimeSeries(seriesProfit);
         }
+        data.addTimeSeries(priceSeries);
 
+        data.setChartTitle(chartTitle);
         return data;
     }
 
@@ -80,5 +90,13 @@ public class UiData {
 
     public List<TimeSeries> getTimeSeries() {
         return mTimeSeries;
+    }
+
+    public String getChartTitle() {
+        return mChartTitle;
+    }
+
+    public void setChartTitle(String chartTitle) {
+        mChartTitle = chartTitle;
     }
 }
