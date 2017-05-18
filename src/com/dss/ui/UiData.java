@@ -3,6 +3,7 @@ package com.dss.ui;
 import com.dss.Config;
 import com.dss.model.Invest;
 import com.dss.model.Investment;
+import com.dss.util.RUtil;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 
@@ -63,18 +64,28 @@ public class UiData {
         UiData data = new UiData();
         TimeSeries priceSeries = new TimeSeries("price", Day.class);
         TimeSeries zhishuSeries = new TimeSeries("指数", Day.class);
+        TimeSeries ratioInYear = new TimeSeries("RatioInYear_" + Config.sRatioInYear, Day.class);
+        TimeSeries ratioInYear2 = new TimeSeries("RatioInYear_" + Config.sRatioInYear2, Day.class);
         for (int i = 0; i < list.size(); i++) {
             Investment investment = list.get(i);
 
             TimeSeries series = new TimeSeries(investment.getCondition().toString(), Day.class);
             TimeSeries seriesProfit = new TimeSeries(investment.getCondition().toString() + "_profit", Day.class);
             List<Invest> invests = investment.getInvests();
-            for (Invest invest : invests) {
+            for (int j = 0; j < invests.size(); j++) {
+                Invest invest = invests.get(j);
+
                 series.add(new Day(invest.getFund().getDate()), invest.getCost());
                 seriesProfit.add(new Day(invest.getFund().getDate()), invest.getProfitRatio());
                 if (i == 0) {
                     priceSeries.add(new Day(invest.getFund().getDate()), invest.getFund().getPrice());
                     zhishuSeries.add(new Day(invest.getFund().getDate()), invest.getZhishu().getValue() / 1000);
+                    if (Config.sRatioInYear > 0) {
+                        ratioInYear.add(new Day(invest.getFund().getDate()), RUtil.r(Config.sRatioInYear, j + 1) - 1);
+                    }
+                    if (Config.sRatioInYear2 > 0) {
+                        ratioInYear2.add(new Day(invest.getFund().getDate()), RUtil.r(Config.sRatioInYear2, j + 1) - 1);
+                    }
                 }
             }
 
@@ -89,6 +100,12 @@ public class UiData {
         }
         if (Config.sShowZhishu) {
             data.addTimeSeries(zhishuSeries);
+        }
+        if (Config.sRatioInYear > 0) {
+            data.addTimeSeries(ratioInYear);
+        }
+        if (Config.sRatioInYear2 > 0) {
+            data.addTimeSeries(ratioInYear2);
         }
 
         data.setChartTitle(chartTitle);

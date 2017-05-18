@@ -36,7 +36,7 @@ public class Cmder {
         }
 
         while (true) {
-            System.out.println("Cmder please input [code base max min total]\n");
+            System.out.println("Cmder please input [code base max min total (ratio in year)]\n");
             new Cmder().execute(filterInfo(bufferedReader.readLine()));
         }
     }
@@ -60,6 +60,14 @@ public class Cmder {
         float max = Float.valueOf(cmds[2]);
         float min = Float.valueOf(cmds[3]);
         int total = Integer.valueOf(cmds[4]);
+        try {
+            Config.sRatioInYear = Float.valueOf(cmds[5]);
+            Config.sRatioInYear2 = Float.valueOf(cmds[6]);
+        } catch (Exception e) {
+//            e.printStackTrace();
+            Config.sRatioInYear = -1f;
+            Config.sRatioInYear2 = -1f;
+        }
 
         List<Investment> investments = new ArrayList<>();
         for (float r : RS) {

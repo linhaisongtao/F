@@ -6,4 +6,6 @@ package com.dss;
 public class Config {
     public static boolean sShowZhishu = false;
     public static boolean sShowPrice = true;
+    public static float sRatioInYear = 0f;
+    public static float sRatioInYear2 = 0f;
 }
